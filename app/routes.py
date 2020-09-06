@@ -67,6 +67,7 @@ def register():
 @app.route("/user/<username>")
 @login_required
 def user(username):
+    # first_or_404 -if none is return automatic it will send the 404 response
     user = User.query.filter_by(username=username).first_or_404()
 
     posts = [
@@ -88,7 +89,7 @@ def before_request():
 @app.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
+    form = EditProfileForm(current_user.username)
 
     if form.validate_on_submit():
         current_user.username = form.username.data
